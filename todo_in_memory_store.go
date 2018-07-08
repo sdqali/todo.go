@@ -20,7 +20,7 @@ func (store InMemoryStore) Find(id string) (TodoItem, error) {
 func (store *InMemoryStore) Remove(id string) {
 	preserveIndex := 0
 	for _, item := range store.items {
-		if item.id.String() == id {
+		if item.id.String() != id {
 			store.items[preserveIndex] = item
 			preserveIndex++
 		}
