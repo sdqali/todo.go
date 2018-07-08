@@ -1,7 +1,5 @@
 package main
 
-import "errors"
-
 type InMemoryStore struct {
 	items []TodoItem
 }
@@ -16,7 +14,7 @@ func (store InMemoryStore) Find(id string) (TodoItem, error) {
 			return item, nil
 		}
 	}
-	return TodoItem{}, errors.New("Can't find item with given id")
+	return TodoItem{}, TodoItemNotFound{possibleId: id}
 }
 
 func (store *InMemoryStore) Remove(id string) {
