@@ -4,8 +4,8 @@ type InMemoryStore struct {
 	items []TodoItem
 }
 
-func (store *InMemoryStore) Add(todoItem TodoItem) {
-	store.items = append(store.items, todoItem)
+func (store *InMemoryStore) Add(item TodoItem) {
+	store.items = append(store.items, item)
 }
 
 func (store InMemoryStore) Find(id string) (TodoItem, error) {
@@ -30,4 +30,14 @@ func (store *InMemoryStore) Remove(id string) {
 
 func (store InMemoryStore) All() []TodoItem {
 	return store.items
+}
+
+func (store *InMemoryStore) Save(itemToSave TodoItem) {
+	for index, item := range store.items {
+		if item.id.String() == itemToSave.id.String() {
+			store.items[index] = itemToSave
+			return
+		}
+	}
+	store.Add(itemToSave)
 }

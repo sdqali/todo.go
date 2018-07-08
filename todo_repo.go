@@ -32,3 +32,7 @@ func (repo TodoRepo) Find(id string) (TodoItem, error) {
 func (repo TodoRepo) Remove(id string) {
 	repo.todoStore.Remove(id)
 }
+
+func (repo TodoRepo) Save(item TodoItem) {
+	repo.todoStore.Save(item)
+}
