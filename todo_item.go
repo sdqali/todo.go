@@ -7,24 +7,24 @@ import (
 )
 
 type TodoItem struct {
-	text string
-	done bool
-	id   uuid.UUID
+	Text string    `json:"text"`
+	Done bool      `json:"done"`
+	Id   uuid.UUID `json:"id"`
 }
 
 func (item TodoItem) String() string {
-	return fmt.Sprintf("%s, %s, %t", item.id, item.text, item.done)
+	return fmt.Sprintf("%s, %s, %t", item.Id, item.Text, item.Done)
 }
 
 func (item *TodoItem) MarkAsDone() {
-	item.done = true
+	item.Done = true
 }
 
 func (item *TodoItem) MarkAsTodo() {
-	item.done = false
+	item.Done = false
 }
 
 func NewItem(text string) TodoItem {
 	id, _ := uuid.NewRandom()
-	return TodoItem{text: text, done: false, id: id}
+	return TodoItem{Text: text, Done: false, Id: id}
 }

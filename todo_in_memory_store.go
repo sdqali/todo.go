@@ -10,7 +10,7 @@ func (store *InMemoryStore) Add(item TodoItem) {
 
 func (store InMemoryStore) Find(id string) (TodoItem, error) {
 	for _, item := range store.items {
-		if item.id.String() == id {
+		if item.Id.String() == id {
 			return item, nil
 		}
 	}
@@ -20,7 +20,7 @@ func (store InMemoryStore) Find(id string) (TodoItem, error) {
 func (store *InMemoryStore) Remove(id string) {
 	preserveIndex := 0
 	for _, item := range store.items {
-		if item.id.String() != id {
+		if item.Id.String() != id {
 			store.items[preserveIndex] = item
 			preserveIndex++
 		}
@@ -34,7 +34,7 @@ func (store InMemoryStore) All() []TodoItem {
 
 func (store *InMemoryStore) Save(itemToSave TodoItem) {
 	for index, item := range store.items {
-		if item.id.String() == itemToSave.id.String() {
+		if item.Id.String() == itemToSave.Id.String() {
 			store.items[index] = itemToSave
 			return
 		}
