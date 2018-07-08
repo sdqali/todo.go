@@ -1,8 +1,8 @@
 package main
 
 type TodoStore interface {
-	add(todoItem TodoItem)
-	find(id string) (TodoItem, error)
-	remove(id string)
-	all() []TodoItem
+	Add(todoItem TodoItem)
+	Find(id string) (TodoItem, error)
+	Remove(id string)
+	All() []TodoItem
 }

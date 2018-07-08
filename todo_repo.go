@@ -11,24 +11,24 @@ type TodoRepo struct {
 
 func (repo TodoRepo) String() string {
 	var b bytes.Buffer
-	for index, item := range repo.all() {
+	for index, item := range repo.All() {
 		b.WriteString(fmt.Sprintf("%d: %s", index, item.String()))
 	}
 	return b.String()
 }
 
-func (repo TodoRepo) all() []TodoItem {
-	return repo.todoStore.all()
+func (repo TodoRepo) All() []TodoItem {
+	return repo.todoStore.All()
 }
 
-func (todoRepo TodoRepo) add(item TodoItem) {
-	todoRepo.todoStore.add(item)
+func (repo TodoRepo) Add(item TodoItem) {
+	repo.todoStore.Add(item)
 }
 
-func (todoRepo TodoRepo) find(id string) (TodoItem, error) {
-	return todoRepo.todoStore.find(id)
+func (repo TodoRepo) Find(id string) (TodoItem, error) {
+	return repo.todoStore.Find(id)
 }
 
-func (todoRepo TodoRepo) remove(id string) {
-	todoRepo.todoStore.remove(id)
+func (repo TodoRepo) Remove(id string) {
+	repo.todoStore.Remove(id)
 }

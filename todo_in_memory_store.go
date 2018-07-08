@@ -6,11 +6,11 @@ type InMemoryStore struct {
 	items []TodoItem
 }
 
-func (store *InMemoryStore) add(todoItem TodoItem) {
+func (store *InMemoryStore) Add(todoItem TodoItem) {
 	store.items = append(store.items, todoItem)
 }
 
-func (store InMemoryStore) find(id string) (TodoItem, error) {
+func (store InMemoryStore) Find(id string) (TodoItem, error) {
 	for _, item := range store.items {
 		if item.id.String() == id {
 			return item, nil
@@ -19,7 +19,7 @@ func (store InMemoryStore) find(id string) (TodoItem, error) {
 	return TodoItem{}, errors.New("Can't find item with given id")
 }
 
-func (store *InMemoryStore) remove(id string) {
+func (store *InMemoryStore) Remove(id string) {
 	preserveIndex := 0
 	for _, item := range store.items {
 		if item.id.String() == id {
@@ -30,6 +30,6 @@ func (store *InMemoryStore) remove(id string) {
 	store.items = store.items[:preserveIndex]
 }
 
-func (store InMemoryStore) all() []TodoItem {
+func (store InMemoryStore) All() []TodoItem {
 	return store.items
 }
