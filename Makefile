@@ -1,7 +1,10 @@
 .PHONY : test build
 
 build:
-	go build github.com/sdqali/todo/cmd/todo
+	go build -v github.com/sdqali/todo/cmd/todo
+
+build-server:
+	go build -v github.com/sdqali/todo/server/todo-server
 
 test:
 	go test github.com/sdqali/todo/test
