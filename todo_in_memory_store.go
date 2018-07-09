@@ -8,7 +8,7 @@ func (store *InMemoryStore) Add(item TodoItem) {
 	store.items = append(store.items, item)
 }
 
-func (store InMemoryStore) Find(id string) (TodoItem, error) {
+func (store InMemoryStore) Get(id string) (TodoItem, error) {
 	for _, item := range store.items {
 		if item.Id.String() == id {
 			return item, nil

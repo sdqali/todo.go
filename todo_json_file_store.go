@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 type JsonFileStore struct {
@@ -16,7 +16,7 @@ func (store *JsonFileStore) Add(item TodoItem) {
 	store.WriteRecord(list)
 }
 
-func (store JsonFileStore) Find(id string) (TodoItem, error) {
+func (store JsonFileStore) Get(id string) (TodoItem, error) {
 	for _, item := range store.All() {
 		if item.Id.String() == id {
 			return item, nil
@@ -51,7 +51,6 @@ func (store *JsonFileStore) WriteRecord(items []TodoItem) {
 
 func (store *JsonFileStore) Save(itemToSave TodoItem) {
 	allItems := store.All()
-	fmt.Println("allItems ", allItems)
 	for index, item := range allItems {
 		if item.Id.String() == itemToSave.Id.String() {
 			allItems[index] = itemToSave
@@ -60,4 +59,14 @@ func (store *JsonFileStore) Save(itemToSave TodoItem) {
 		}
 	}
 	store.Add(itemToSave)
+}
+
+func (store JsonFileStore) Find(searchTerm string) []TodoItem {
+	results := []TodoItem{}
+	for _, item := range store.All() {
+		if strings.Contains(strings.ToLower(item.Text), strings.ToLower(searchTerm)) {
+			results = append(results, item)
+		}
+	}
+	return results
 }

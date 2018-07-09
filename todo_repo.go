@@ -6,33 +6,55 @@ import (
 )
 
 type TodoRepo struct {
-	todoStore TodoStore
+	store TodoStore
 }
 
 func (repo TodoRepo) String() string {
 	var b bytes.Buffer
 	for index, item := range repo.All() {
-		b.WriteString(fmt.Sprintf("%d: %s", index, item.String()))
+		b.WriteString(fmt.Sprintf("%d: %s\n", index, item.String()))
 	}
 	return b.String()
 }
 
 func (repo TodoRepo) All() []TodoItem {
-	return repo.todoStore.All()
+	return repo.store.All()
 }
 
 func (repo TodoRepo) Add(item TodoItem) {
-	repo.todoStore.Add(item)
+	repo.store.Add(item)
 }
 
-func (repo TodoRepo) Find(id string) (TodoItem, error) {
-	return repo.todoStore.Find(id)
+func (repo TodoRepo) Get(id string) (TodoItem, error) {
+	return repo.store.Get(id)
 }
 
 func (repo TodoRepo) Remove(id string) {
-	repo.todoStore.Remove(id)
+	repo.store.Remove(id)
 }
 
 func (repo TodoRepo) Save(item TodoItem) {
-	repo.todoStore.Save(item)
+	repo.store.Save(item)
+}
+
+func (repo TodoRepo) MarkAsDone(id string) {
+	item, err := repo.Get(id)
+	if err == nil {
+		item.MarkAsDone()
+		fmt.Println(item)
+		repo.Save(item)
+	}
+}
+
+func (repo TodoRepo) MarkAsTodo(id string) {
+	item, err := repo.Get(id)
+	if err == nil {
+		item.MarkAsTodo()
+		fmt.Println(item)
+		repo.Save(item)
+	}
+}
+
+func (repo TodoRepo) Find(searchTerm string) []TodoItem {
+	return repo.store.Find(searchTerm)
 }
