@@ -3,7 +3,8 @@ package todo
 import (
 	"os"
 	"testing"
-	"todo"
+
+	todo "github.com/sdqali/todo"
 )
 
 const testFilePath string = "/tmp/test.json"

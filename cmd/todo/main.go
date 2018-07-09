@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"strings"
-	"todo"
+
+	todo "github.com/sdqali/todo"
 )
 
 func main() {
