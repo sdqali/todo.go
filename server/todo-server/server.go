@@ -21,7 +21,7 @@ func main() {
 	router.HandleFunc("/{id}", Get(repo)).Methods("GET")
 
 	http.Handle("/", router)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8090", nil))
 }
 
 func List(repo todo.TodoRepo) func(w http.ResponseWriter, r *http.Request) {
