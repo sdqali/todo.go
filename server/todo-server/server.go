@@ -16,12 +16,23 @@ func main() {
 	repo := todo.NewTodoRepo(&store)
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/", List(repo)).Methods("GET")
+
+	router.HandleFunc("/{id}", Get(repo)).Methods("GET")
+
+	http.Handle("/", router)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func List(repo todo.TodoRepo) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(repo.All())
-	})
+	}
+}
 
-	router.HandleFunc("/{id}", func(w http.ResponseWriter, r *http.Request) {
+func Get(repo todo.TodoRepo) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		vars := mux.Vars(r)
 		item, err := repo.Get(vars["id"])
@@ -31,8 +42,5 @@ func main() {
 		} else {
 			w.WriteHeader(http.StatusNotFound)
 		}
-	})
-
-	http.Handle("/", router)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	}
 }
