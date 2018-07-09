@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+	"todo"
 )
 
 func main() {
@@ -12,14 +13,14 @@ func main() {
 	var action string
 	flag.StringVar(&action, "action", "list", "An action to perform - one of list, add, get, mark-todo, mark-done, find, delete.")
 	flag.Parse()
-
-	repo := TodoRepo{store: &JsonFileStore{filePath: filePath}}
+	store := todo.NewJsonFileStore(filePath)
+	repo := todo.NewTodoRepo(&store)
 	switch action {
 	case "list":
 		fmt.Println(repo)
 	case "add":
 		text := strings.Join(flag.Args(), " ")
-		repo.Add(NewItem(text))
+		repo.Add(todo.NewItem(text))
 	case "get":
 		id := flag.Args()[0]
 		item, err := repo.Get(id)

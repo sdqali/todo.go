@@ -1,4 +1,4 @@
-package main
+package todo
 
 import (
 	"bytes"
@@ -7,6 +7,10 @@ import (
 
 type TodoRepo struct {
 	store TodoStore
+}
+
+func NewTodoRepo(store TodoStore) TodoRepo {
+	return TodoRepo{store: store}
 }
 
 func (repo TodoRepo) String() string {

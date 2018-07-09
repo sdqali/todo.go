@@ -1,4 +1,4 @@
-package main
+package todo
 
 import (
 	"encoding/json"
@@ -8,6 +8,10 @@ import (
 
 type JsonFileStore struct {
 	filePath string
+}
+
+func NewJsonFileStore(filePath string) JsonFileStore {
+	return JsonFileStore{filePath: filePath}
 }
 
 func (store *JsonFileStore) Add(item TodoItem) {
