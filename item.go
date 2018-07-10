@@ -7,7 +7,7 @@ import (
 )
 
 type TodoItem struct {
-	Text string    `json:"text"`
+	Text string    `json:"title"`
 	Done bool      `json:"done"`
 	Id   uuid.UUID `json:"id"`
 }

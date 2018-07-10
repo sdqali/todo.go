@@ -18,6 +18,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", routes.List(repo)).Methods("GET")
+	router.HandleFunc("/", routes.Create(repo)).Methods("POST")
 	router.HandleFunc("/{id}", routes.Get(repo)).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8090", middleware.WithMiddleWares(router)))
