@@ -8,8 +8,9 @@ import (
 
 type TodoItem struct {
 	Text string    `json:"title"`
-	Done bool      `json:"done"`
+	Done bool      `json:"completed"`
 	Id   uuid.UUID `json:"id"`
+	Url  string    `json:"url"`
 }
 
 func (item TodoItem) String() string {
@@ -24,7 +25,8 @@ func (item *TodoItem) MarkAsTodo() {
 	item.Done = false
 }
 
-func NewItem(text string) TodoItem {
+func NewItem(text string, baseUrl string) TodoItem {
 	id, _ := uuid.NewRandom()
-	return TodoItem{Text: text, Done: false, Id: id}
+	url := fmt.Sprintf("%s/%s", baseUrl, id)
+	return TodoItem{Text: text, Done: false, Id: id, Url: url}
 }

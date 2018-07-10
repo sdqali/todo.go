@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/sdqali/todo"
@@ -15,7 +16,7 @@ func Create(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.R
 		var itemRequest models.TodoItemRequest
 		bytes, _ := ioutil.ReadAll(request.Body)
 		json.Unmarshal(bytes, &itemRequest)
-		item := todo.NewItem(itemRequest.Title)
+		item := todo.NewItem(itemRequest.Title, baseUrl())
 		repo.Add(item)
 		json.NewEncoder(writer).Encode(item)
 	}
@@ -45,4 +46,8 @@ func Clear(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Re
 		repo.Clear()
 		writer.WriteHeader(http.StatusOK)
 	}
+}
+
+func baseUrl() string {
+	return os.Getenv("BASE_URL")
 }
