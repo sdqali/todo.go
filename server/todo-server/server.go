@@ -19,6 +19,7 @@ func main() {
 
 	router.HandleFunc("/", routes.List(repo)).Methods("GET")
 	router.HandleFunc("/", routes.Create(repo)).Methods("POST")
+	router.HandleFunc("/", routes.Clear(repo)).Methods("DELETE")
 	router.HandleFunc("/{id}", routes.Get(repo)).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8090", middleware.WithMiddleWares(router)))

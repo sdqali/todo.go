@@ -37,6 +37,12 @@ func (repo TodoRepo) Remove(id string) {
 	repo.store.Remove(id)
 }
 
+func (repo TodoRepo) Clear() {
+	for _, item := range repo.store.All() {
+		repo.Remove(item.Id.String())
+	}
+}
+
 func (repo TodoRepo) Save(item TodoItem) {
 	repo.store.Save(item)
 }

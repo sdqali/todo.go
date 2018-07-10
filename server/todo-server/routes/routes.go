@@ -39,3 +39,10 @@ func Get(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Requ
 		}
 	}
 }
+
+func Clear(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		repo.Clear()
+		writer.WriteHeader(http.StatusOK)
+	}
+}
