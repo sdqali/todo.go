@@ -47,7 +47,7 @@ func (store *InMemoryStore) Save(itemToSave TodoItem) {
 func (store *InMemoryStore) Find(searchTerm string) []TodoItem {
 	results := []TodoItem{}
 	for _, item := range store.All() {
-		if strings.Contains(strings.ToLower(item.Text), strings.ToLower(searchTerm)) {
+		if strings.Contains(strings.ToLower(item.Title), strings.ToLower(searchTerm)) {
 			results = append(results, item)
 		}
 	}

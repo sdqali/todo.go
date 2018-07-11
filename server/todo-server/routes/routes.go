@@ -51,7 +51,7 @@ func Patch(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Re
 			bytes, _ := ioutil.ReadAll(request.Body)
 			json.Unmarshal(bytes, &itemPatchRequest)
 
-			item.Text = itemPatchRequest.Title
+			item.Title = itemPatchRequest.Title
 			item.Done = itemPatchRequest.Done
 			repo.Save(item)
 
