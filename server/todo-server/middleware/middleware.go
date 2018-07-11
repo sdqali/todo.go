@@ -22,7 +22,7 @@ func JsonMiddleWare(handler http.Handler) http.Handler {
 func WithCors(router *mux.Router) http.Handler {
 	headersOk := handlers.AllowedHeaders([]string{"Content-Type"})
 	originsOk := handlers.AllowedOrigins([]string{os.Getenv("CORS_ALLOWED_ORIGINS")})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"})
 
 	return handlers.CORS(originsOk, headersOk, methodsOk)(router)
 }
