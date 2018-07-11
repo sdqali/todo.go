@@ -42,6 +42,19 @@ func Get(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Requ
 	}
 }
 
+func Delete(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		vars := mux.Vars(request)
+		item, err := repo.Get(vars["id"])
+		if err == nil {
+			repo.Remove(item.Id.String())
+			writer.WriteHeader(http.StatusOK)
+		} else {
+			writer.WriteHeader(http.StatusNotFound)
+		}
+	}
+}
+
 func Patch(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		vars := mux.Vars(request)
