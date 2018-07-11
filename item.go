@@ -1,7 +1,9 @@
 package todo
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/google/uuid"
 )
@@ -10,7 +12,6 @@ type TodoItem struct {
 	Text string    `json:"title"`
 	Done bool      `json:"completed"`
 	Id   uuid.UUID `json:"id"`
-	Url  string    `json:"url"`
 }
 
 func (item TodoItem) String() string {
@@ -25,8 +26,22 @@ func (item *TodoItem) MarkAsTodo() {
 	item.Done = false
 }
 
-func NewItem(text string, baseUrl string) TodoItem {
+func (item TodoItem) MarshalJSON() ([]byte, error) {
+	type Alias TodoItem
+	return json.Marshal(&struct {
+		Url string `json:"url"`
+		Alias
+	}{
+		Url:   fmt.Sprintf("%s/%s", baseUrl(), item.Id),
+		Alias: (Alias)(item),
+	})
+}
+
+func NewItem(text string) TodoItem {
 	id, _ := uuid.NewRandom()
-	url := fmt.Sprintf("%s/%s", baseUrl, id)
-	return TodoItem{Text: text, Done: false, Id: id, Url: url}
+	return TodoItem{Text: text, Done: false, Id: id}
+}
+
+func baseUrl() string {
+	return os.Getenv("BASE_URL")
 }

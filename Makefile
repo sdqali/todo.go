@@ -7,4 +7,4 @@ build-server:
 	go build -v github.com/sdqali/todo/server/todo-server
 
 test:
-	go test github.com/sdqali/todo/test
+	go test -v github.com/sdqali/todo/test
