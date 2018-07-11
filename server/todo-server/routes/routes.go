@@ -17,6 +17,7 @@ func Create(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.R
 		json.Unmarshal(bytes, &itemRequest)
 
 		item := todo.NewItem(itemRequest.Title)
+		item.Order = itemRequest.Order
 		repo.Add(item)
 
 		json.NewEncoder(writer).Encode(item)
@@ -66,6 +67,7 @@ func Patch(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Re
 
 			item.Title = itemPatchRequest.Title
 			item.Done = itemPatchRequest.Done
+			item.Order = itemPatchRequest.Order
 			repo.Save(item)
 
 			writer.WriteHeader(http.StatusOK)

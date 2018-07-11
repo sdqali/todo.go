@@ -12,6 +12,7 @@ type TodoItem struct {
 	Title string    `json:"title"`
 	Done  bool      `json:"completed"`
 	Id    uuid.UUID `json:"id"`
+	Order int       `json:"order"`
 }
 
 func (item TodoItem) String() string {
