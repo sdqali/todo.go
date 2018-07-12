@@ -3,6 +3,7 @@
 PROJECT="github.com/sdqali/todo"
 
 build:
+	go build -v $(PROJECT)/db/migrate
 	go build -v $(PROJECT)/cmd/todo
 
 build-server:
@@ -12,7 +13,8 @@ test:
 	go test -v $(PROJECT)
 
 docker-build:
+	godep save ./...
 	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make build build-server
 
-push:
+push: docker-build
 	heroku container:push web && heroku container:release web

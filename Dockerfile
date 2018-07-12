@@ -3,5 +3,6 @@ FROM iron/go
 WORKDIR /app
 
 ADD todo-server /app/
+ADD migrate /app/
 
-CMD ["./todo-server"]
+CMD ["./migrate && ./todo-server"]
