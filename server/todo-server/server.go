@@ -2,8 +2,10 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/sdqali/todo"
@@ -25,7 +27,8 @@ func main() {
 	router.HandleFunc("/{id}", routes.Patch(repo)).Methods("PATCH")
 	router.HandleFunc("/{id}", routes.Delete(repo)).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":8090", middleware.WithMiddleWares(router)))
+	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+	log.Fatal(http.ListenAndServe(port, middleware.WithMiddleWares(router)))
 }
 
 func getRepo() todo.TodoRepo {
