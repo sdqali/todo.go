@@ -13,3 +13,6 @@ test:
 
 docker-build:
 	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make build build-server
+
+push:
+	heroku container:push web && heroku container:release web
