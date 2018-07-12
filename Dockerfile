@@ -4,5 +4,6 @@ WORKDIR /app
 
 ADD todo-server /app/
 ADD migrate /app/
+ADD migrations /app/migrations
 
-CMD ["./migrate && ./todo-server"]
+CMD ["sh", "-c", "./migrate && ./todo-server"]
