@@ -15,7 +15,7 @@ func main() {
 	flag.StringVar(&action, "action", "list", "An action to perform - one of list, add, get, mark-todo, mark-done, find, delete.")
 	flag.Parse()
 	store := todo.NewJsonFileStore(filePath)
-	repo := todo.NewTodoRepo(&store)
+	repo := todo.NewTodoRepo(store)
 	switch action {
 	case "list":
 		fmt.Println(repo)
