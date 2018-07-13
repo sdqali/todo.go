@@ -7,11 +7,11 @@ import (
 	"github.com/golang-migrate/migrate/database/postgres"
 	_ "github.com/golang-migrate/migrate/source/file"
 	_ "github.com/lib/pq"
-	todo "github.com/sdqali/todo/db"
+	"github.com/sdqali/todo/db"
 )
 
 func main() {
-	db := todo.GetDb()
+	db := db.GetDb()
 	driver, _ := postgres.WithInstance(db, &postgres.Config{})
 	m, error := migrate.NewWithDatabaseInstance(
 		"file://./migrations",
