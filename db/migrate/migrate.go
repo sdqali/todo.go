@@ -1,17 +1,17 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"os"
 
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/postgres"
 	_ "github.com/golang-migrate/migrate/source/file"
+	_ "github.com/lib/pq"
+	todo "github.com/sdqali/todo/db"
 )
 
 func main() {
-	db, _ := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db := todo.GetDb()
 	driver, _ := postgres.WithInstance(db, &postgres.Config{})
 	m, error := migrate.NewWithDatabaseInstance(
 		"file://./migrations",

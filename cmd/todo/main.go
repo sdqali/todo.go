@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	todo "github.com/sdqali/todo"
+	"github.com/sdqali/todo"
 )
 
 func main() {
@@ -13,8 +13,21 @@ func main() {
 	flag.StringVar(&filePath, "file", "/tmp/todo.json", "Path to a file to store Todo items in.")
 	var action string
 	flag.StringVar(&action, "action", "list", "An action to perform - one of list, add, get, mark-todo, mark-done, find, delete.")
+	var storeType string
+	flag.StringVar(&storeType, "store", "in-memory", "One of json-file or in-memory")
 	flag.Parse()
-	store := todo.NewJsonFileStore(filePath)
+
+	var store todo.TodoStore
+
+	switch storeType {
+	case "json-file":
+		store = todo.NewJsonFileStore(filePath)
+	case "in-memory":
+		store = &todo.InMemoryStore{}
+	default:
+		store = &todo.InMemoryStore{}
+	}
+
 	repo := todo.NewTodoRepo(store)
 	switch action {
 	case "list":
