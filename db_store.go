@@ -6,7 +6,8 @@ import (
 	"github.com/google/uuid"
 )
 
-const SELECT_QUERY = "SELECT * FROM todo_items;"
+const SELECT_ALL_QUERY = "SELECT id, title, item_order, completed FROM todo_items;"
+const SELECT_QUERY = "SELECT id, title, item_order, completed FROM todo_items WHERE id=$1;"
 const INSERT_QUERY = "INSERT INTO todo_items(id, title, item_order, completed) VALUES($1, $2, $3, $4);"
 
 type DbStore struct {
@@ -22,15 +23,17 @@ func (store *DbStore) Add(item TodoItem) {
 }
 
 func (store DbStore) Get(id string) (TodoItem, error) {
-	return TodoItem{}, TodoItemNotFound{possibleId: id}
+	rows, _ := store.db.Query(SELECT_QUERY, id)
+	list := listFromRows(rows)
+	if len(list) == 0 {
+		return TodoItem{}, TodoItemNotFound{possibleId: id}
+	} else {
+		return list[0], nil
+	}
 }
 
-func (store *DbStore) Remove(id string) {
-}
-
-func (store DbStore) All() []TodoItem {
+func listFromRows(rows *sql.Rows) []TodoItem {
 	var list []TodoItem
-	rows, _ := store.db.Query(SELECT_QUERY)
 	for rows.Next() {
 		var id uuid.UUID
 		var title string
@@ -41,6 +44,14 @@ func (store DbStore) All() []TodoItem {
 		list = append(list, TodoItem{Id: id, Title: title, Order: order, Done: completed})
 	}
 	return list
+}
+
+func (store *DbStore) Remove(id string) {
+}
+
+func (store DbStore) All() []TodoItem {
+	rows, _ := store.db.Query(SELECT_ALL_QUERY)
+	return listFromRows(rows)
 }
 
 func (store *DbStore) Save(itemToSave TodoItem) {
