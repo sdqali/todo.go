@@ -2,6 +2,7 @@ package todo
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -11,6 +12,7 @@ const SELECT_QUERY = "SELECT id, title, item_order, completed FROM todo_items WH
 const INSERT_QUERY = "INSERT INTO todo_items(id, title, item_order, completed) VALUES($1, $2, $3, $4);"
 const DELETE_QUERY = "DELETE FROM todo_items WHERE id=$1;"
 const UPDATE_QUERY = "UPDATE todo_items SET title=$1, item_order=$2, completed=$3 WHERE id=$4;"
+const SEARCH_QUERY = "SELECT id, title, item_order, completed FROM todo_items WHERE title ILIKE '%%%s%%';"
 
 type DbStore struct {
 	db *sql.DB
@@ -48,8 +50,13 @@ func (store *DbStore) Save(itemToSave TodoItem) {
 }
 
 func (store DbStore) Find(searchTerm string) []TodoItem {
-	var list []TodoItem
-	return list
+	query := fmt.Sprintf(SEARCH_QUERY, searchTerm)
+	rows, err := store.db.Query(query)
+	if err == nil {
+		return itemsFromRows(rows)
+	} else {
+		return []TodoItem{}
+	}
 }
 
 func itemsFromRows(rows *sql.Rows) []TodoItem {
