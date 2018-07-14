@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/sdqali/todo"
-	"github.com/sdqali/todo/db"
+	pg "github.com/sdqali/todo/db/postgres"
 )
 
 func main() {
@@ -25,8 +25,8 @@ func main() {
 		store = todo.NewJsonFileStore(filePath)
 	case "in-memory":
 		store = &todo.InMemoryStore{}
-	case "db":
-		db := db.GetDb()
+	case "pg":
+		db := pg.GetDb()
 		store = todo.NewDbStore(db)
 	default:
 		store = &todo.InMemoryStore{}

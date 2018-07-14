@@ -6,4 +6,4 @@ ADD out/docker/todo-server /app/
 ADD dbdo.sh /app/
 ADD migrations /app/migrations
 
-CMD ["sh", "-c", "./dbdo.sh && ./todo-server --store=db"]
+CMD ["sh", "-c", "./dbdo.sh && ./todo-server --store=pg"]
