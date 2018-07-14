@@ -10,6 +10,7 @@ const SELECT_ALL_QUERY = "SELECT id, title, item_order, completed FROM todo_item
 const SELECT_QUERY = "SELECT id, title, item_order, completed FROM todo_items WHERE id=$1;"
 const INSERT_QUERY = "INSERT INTO todo_items(id, title, item_order, completed) VALUES($1, $2, $3, $4);"
 const DELETE_QUERY = "DELETE FROM todo_items WHERE id=$1;"
+const UPDATE_QUERY = "UPDATE todo_items SET title=$1, item_order=$2, completed=$3 WHERE id=$4;"
 
 type DbStore struct {
 	db *sql.DB
@@ -43,6 +44,7 @@ func (store DbStore) All() []TodoItem {
 }
 
 func (store *DbStore) Save(itemToSave TodoItem) {
+	store.db.Query(UPDATE_QUERY, itemToSave.Title, itemToSave.Order, itemToSave.Done, itemToSave.Id)
 }
 
 func (store DbStore) Find(searchTerm string) []TodoItem {
