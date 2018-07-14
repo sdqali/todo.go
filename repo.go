@@ -47,10 +47,10 @@ func (repo TodoRepo) Save(item TodoItem) {
 	repo.store.Save(item)
 }
 
-func (repo TodoRepo) MarkAsDone(id string) {
+func (repo TodoRepo) MarkAsCompleted(id string) {
 	item, err := repo.Get(id)
 	if err == nil {
-		item.MarkAsDone()
+		item.MarkAsCompleted()
 		fmt.Println(item)
 		repo.Save(item)
 	}

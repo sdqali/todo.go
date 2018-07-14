@@ -66,7 +66,7 @@ func Patch(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.Re
 			json.Unmarshal(bytes, &itemPatchRequest)
 
 			item.Title = itemPatchRequest.Title
-			item.Done = itemPatchRequest.Done
+			item.Completed = itemPatchRequest.Completed
 			item.Order = itemPatchRequest.Order
 			repo.Save(item)
 

@@ -23,7 +23,7 @@ func NewDbStore(db *sql.DB) *DbStore {
 }
 
 func (store *DbStore) Add(item TodoItem) {
-	rows, _ := store.db.Query(INSERT_QUERY, item.Id, item.Title, item.Order, item.Done)
+	rows, _ := store.db.Query(INSERT_QUERY, item.Id, item.Title, item.Order, item.Completed)
 	rows.Close()
 }
 
@@ -62,7 +62,7 @@ func (store DbStore) All() []TodoItem {
 }
 
 func (store *DbStore) Save(itemToSave TodoItem) {
-	rows, _ := store.db.Query(UPDATE_QUERY, itemToSave.Title, itemToSave.Order, itemToSave.Done, itemToSave.Id)
+	rows, _ := store.db.Query(UPDATE_QUERY, itemToSave.Title, itemToSave.Order, itemToSave.Completed, itemToSave.Id)
 	rows.Close()
 }
 
@@ -87,7 +87,7 @@ func itemsFromRows(rows *sql.Rows) []TodoItem {
 		var completed bool
 
 		rows.Scan(&id, &title, &order, &completed)
-		list = append(list, TodoItem{Id: id, Title: title, Order: order, Done: completed})
+		list = append(list, TodoItem{Id: id, Title: title, Order: order, Completed: completed})
 	}
 	return list
 }

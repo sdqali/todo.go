@@ -9,22 +9,22 @@ import (
 )
 
 type TodoItem struct {
-	Title string    `json:"title"`
-	Done  bool      `json:"completed"`
-	Id    uuid.UUID `json:"id"`
-	Order int       `json:"order"`
+	Title     string    `json:"title"`
+	Completed bool      `json:"completed"`
+	Id        uuid.UUID `json:"id"`
+	Order     int       `json:"order"`
 }
 
 func (item TodoItem) String() string {
-	return fmt.Sprintf("%s, %s, %t", item.Id, item.Title, item.Done)
+	return fmt.Sprintf("%s, %s, %t", item.Id, item.Title, item.Completed)
 }
 
-func (item *TodoItem) MarkAsDone() {
-	item.Done = true
+func (item *TodoItem) MarkAsCompleted() {
+	item.Completed = true
 }
 
 func (item *TodoItem) MarkAsTodo() {
-	item.Done = false
+	item.Completed = false
 }
 
 func (item TodoItem) MarshalJSON() ([]byte, error) {
@@ -40,7 +40,7 @@ func (item TodoItem) MarshalJSON() ([]byte, error) {
 
 func NewItem(text string) TodoItem {
 	id, _ := uuid.NewRandom()
-	return TodoItem{Title: text, Done: false, Id: id}
+	return TodoItem{Title: text, Completed: false, Id: id}
 }
 
 func baseUrl() string {

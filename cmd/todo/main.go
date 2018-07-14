@@ -49,7 +49,7 @@ func main() {
 		}
 	case "mark-done":
 		id := flag.Args()[0]
-		repo.MarkAsDone(id)
+		repo.MarkAsCompleted(id)
 	case "mark-todo":
 		id := flag.Args()[0]
 		repo.MarkAsTodo(id)
