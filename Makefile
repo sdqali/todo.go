@@ -10,11 +10,11 @@ test:
 	go test -v $(PROJECT)
 
 ensure-migrate-cli:
-	OUT_DIR=out/docker ./ensure-migrate-cli.sh
+	OUT_DIR=out/$(PREFIX) ./ensure-migrate-cli.sh
 
-docker-deps: ensure-migrate-cli
+docker-deps:
 	godep save ./...
-	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build
+	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build ensure-migrate-cli
 
 docker:
 	docker build -t todo/`git rev-parse HEAD` .

@@ -1,0 +1,6 @@
+FROM iron/go
+
+WORKDIR /app
+
+ADD ensure-migrate-cli.sh /tmp/
+RUN /tmp/ensure-migrate-cli.sh
