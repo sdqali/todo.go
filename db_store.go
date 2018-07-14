@@ -41,8 +41,13 @@ func (store *DbStore) Remove(id string) {
 }
 
 func (store DbStore) All() []TodoItem {
-	rows, _ := store.db.Query(SELECT_ALL_QUERY)
-	return itemsFromRows(rows)
+	rows, err := store.db.Query(SELECT_ALL_QUERY)
+
+	if err == nil {
+		return itemsFromRows(rows)
+	} else {
+		return make([]TodoItem, 0)
+	}
 }
 
 func (store *DbStore) Save(itemToSave TodoItem) {
@@ -55,12 +60,12 @@ func (store DbStore) Find(searchTerm string) []TodoItem {
 	if err == nil {
 		return itemsFromRows(rows)
 	} else {
-		return []TodoItem{}
+		return make([]TodoItem, 0)
 	}
 }
 
 func itemsFromRows(rows *sql.Rows) []TodoItem {
-	var list []TodoItem
+	list := make([]TodoItem, 0)
 	for rows.Next() {
 		var id uuid.UUID
 		var title string
