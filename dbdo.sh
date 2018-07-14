@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./migrate -database $DATABASE_URL -source file://migrations/postgres up
+./pg_migrate -database $DATABASE_URL -source file://migrations/postgres up

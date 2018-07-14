@@ -2,4 +2,4 @@ FROM iron/go
 
 WORKDIR /app
 
-ADD out/docker/migrate /app/
+ADD out/docker/pg_migrate /app/

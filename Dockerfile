@@ -1,4 +1,4 @@
-FROM sdqali.in/go/todo/base:57b0216
+FROM sdqali.in/go/todo/base:31f7924
 
 WORKDIR /app
 
