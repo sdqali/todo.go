@@ -14,10 +14,14 @@ ensure-migrate-cli:
 
 docker-deps:
 	godep save ./...
-	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build ensure-migrate-cli
+	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build
 
-docker:
-	docker build -t todo/`git rev-parse HEAD` .
+docker-base:
+	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker ensure-migrate-cli
+	docker build -t sdqali.in/go/todo/base:`git rev-parse --short HEAD` -f Dockerfile.base .
+
+docker: docker-deps
+	docker build -t sdqali.in/go/todo/`git rev-parse HEAD` .
 
 deploy: docker-deps
 	heroku container:push web && heroku container:release web
