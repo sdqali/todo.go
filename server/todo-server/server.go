@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sdqali/todo"
+	"github.com/sdqali/todo/db"
 	"github.com/sdqali/todo/server/todo-server/middleware"
 	"github.com/sdqali/todo/server/todo-server/routes"
 )
@@ -47,6 +48,9 @@ func getStore() todo.TodoStore {
 		store = todo.NewJsonFileStore(filePath)
 	case "in-memory":
 		store = &todo.InMemoryStore{}
+	case "db":
+		db := db.GetDb()
+		store = todo.NewDbStore(db)
 	default:
 		store = &todo.InMemoryStore{}
 	}
