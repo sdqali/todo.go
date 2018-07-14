@@ -21,7 +21,7 @@ docker-base:
 	docker build -t sdqali.in/go/todo/base:`git rev-parse --short HEAD` -f Dockerfile.base .
 
 docker: docker-deps
-	docker build -t sdqali.in/go/todo/`git rev-parse HEAD` .
+	docker build -t sdqali.in/go/todo:`git rev-parse HEAD` .
 
 deploy: docker-deps
 	heroku container:push web && heroku container:release web
