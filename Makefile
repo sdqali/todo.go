@@ -14,5 +14,5 @@ docker-build:
 	godep save ./...
 	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build
 
-push: docker-build
+deploy: docker-build
 	heroku container:push web && heroku container:release web
