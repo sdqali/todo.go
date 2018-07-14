@@ -9,13 +9,15 @@ build:
 test:
 	go test -v $(PROJECT)
 
-build-migrate-cli:
-	OUT_DIR=out/$(PREFIX) ./build-migrate-cli.sh
+ensure-migrate-cli:
+	OUT_DIR=out/docker ./ensure-migrate-cli.sh
 
-
-docker-build:
+docker-deps: ensure-migrate-cli
 	godep save ./...
-	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build build-migrate-cli
+	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build
 
-deploy: docker-build
+docker:
+	docker build -t todo/`git rev-parse HEAD` .
+
+deploy: docker-deps
 	heroku container:push web && heroku container:release web
