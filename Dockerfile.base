@@ -1,5 +1,0 @@
-FROM iron/go
-
-WORKDIR /app
-
-ADD out/docker/pg_migrate /app/
