@@ -11,6 +11,8 @@ test:
 
 docker:
 	docker build -t sdqali.in/go/todo:latest .
+	docker image prune -f
 
 deploy:
 	heroku container:push web && heroku container:release web
+	docker image prune -f

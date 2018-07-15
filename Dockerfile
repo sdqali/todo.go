@@ -1,8 +1,9 @@
 FROM iron/go:dev AS builder
-LABEL stage=todo-intermediate
+
 COPY . /go/src/github.com/sdqali/todo
 WORKDIR /go/src/github.com/sdqali/todo
 RUN make PREFIX=docker build
+
 
 FROM migrate/migrate:v3.3.0
 
