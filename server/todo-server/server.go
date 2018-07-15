@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sdqali/todo"
+	cassandra "github.com/sdqali/todo/db/cassandra"
 	pg "github.com/sdqali/todo/db/postgres"
 	"github.com/sdqali/todo/server/todo-server/middleware"
 	"github.com/sdqali/todo/server/todo-server/routes"
@@ -51,6 +52,9 @@ func getStore() todo.TodoStore {
 	case "pg":
 		db := pg.GetDb()
 		store = todo.NewDbStore(db)
+	case "cassandra":
+		cluster := cassandra.GetCluster()
+		store = cassandra.NewCassandraStore(cluster)
 	default:
 		store = &todo.InMemoryStore{}
 	}
