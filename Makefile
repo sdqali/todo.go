@@ -9,12 +9,8 @@ build:
 test:
 	go test -v $(PROJECT)
 
-docker-deps:
-	godep save ./...
-	docker run --rm -v `pwd`:/go/src/$(PROJECT) -w /go/src/$(PROJECT) iron/go:dev make PREFIX=docker build
+docker:
+	docker build -t sdqali.in/go/todo:latest .
 
-docker: docker-deps
-	docker build -t sdqali.in/go/todo:`git rev-parse HEAD` .
-
-deploy: docker-deps
+deploy:
 	heroku container:push web && heroku container:release web
