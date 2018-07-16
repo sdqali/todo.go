@@ -14,7 +14,7 @@ const INSERT_QUERY = "INSERT INTO todo_items(id, title, item_order, completed) V
 const SELECT_QUERY = "SELECT id, title, item_order, completed FROM todo_items WHERE id=? LIMIT 1;"
 const DELETE_QUERY = "DELETE FROM todo_items WHERE id=?;"
 const UPDATE_QUERY = "UPDATE todo_items SET title=?, item_order=?, completed=? WHERE id=?;"
-const SEARCH_QUERY = "SELECT id, title, item_order, completed FROM todo_items WHERE title ILIKE '%%%s%%';"
+const SEARCH_QUERY = "SELECT id, title, item_order, completed FROM todo_items WHERE title LIKE '%%%s%%' ALLOW FILTERING;"
 
 type CassandraStore struct {
 	cluster *gocql.ClusterConfig
@@ -93,7 +93,15 @@ func (store *CassandraStore) Save(item todo.TodoItem) {
 }
 
 func (store *CassandraStore) Find(searchTerm string) []todo.TodoItem {
-	return make([]todo.TodoItem, 0)
+	session, err := store.cluster.CreateSession()
+	defer session.Close()
+	if err != nil {
+		fmt.Println("ERROR: ", err)
+		return make([]todo.TodoItem, 0)
+	}
+	query := fmt.Sprintf(SEARCH_QUERY, searchTerm)
+	iter := session.Query(query).Iter()
+	return itemsFromIter(iter)
 }
 
 func itemsFromIter(iter *gocql.Iter) []todo.TodoItem {
