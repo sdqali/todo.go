@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/sdqali/todo/errors"
 )
 
 const SELECT_ALL_QUERY = "SELECT id, title, item_order, completed FROM todo_items;"
@@ -32,11 +33,11 @@ func (store DbStore) Get(id string) (TodoItem, error) {
 	defer rows.Close()
 	if err != nil {
 		fmt.Println("ERROR: ", err)
-		return TodoItem{}, TodoItemNotFound{possibleId: id}
+		return TodoItem{}, errors.NotFound(id)
 	}
 	list := itemsFromRows(rows)
 	if len(list) == 0 {
-		return TodoItem{}, TodoItemNotFound{possibleId: id}
+		return TodoItem{}, errors.NotFound(id)
 	} else {
 		return list[0], nil
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/google/uuid"
 	todo "github.com/sdqali/todo"
+	"github.com/sdqali/todo/errors"
 )
 
 const SELECT_ALL_QUERY = "SELECT id, title, item_order, completed FROM todo_items;"
@@ -33,7 +34,7 @@ func (store *CassandraStore) Add(item todo.TodoItem) {
 }
 
 func (store *CassandraStore) Get(id string) (todo.TodoItem, error) {
-	return todo.TodoItem{}, nil
+	return todo.TodoItem{}, errors.NotFound(id)
 }
 
 func (store *CassandraStore) Remove(id string) {

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"strings"
+
+	"github.com/sdqali/todo/errors"
 )
 
 type JsonFileStore struct {
@@ -26,7 +28,7 @@ func (store JsonFileStore) Get(id string) (TodoItem, error) {
 			return item, nil
 		}
 	}
-	return TodoItem{}, TodoItemNotFound{possibleId: id}
+	return TodoItem{}, errors.NotFound(id)
 }
 
 func (store *JsonFileStore) Remove(id string) {

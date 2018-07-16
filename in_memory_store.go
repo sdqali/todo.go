@@ -1,6 +1,10 @@
 package todo
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/sdqali/todo/errors"
+)
 
 type InMemoryStore struct {
 	items []TodoItem
@@ -16,7 +20,7 @@ func (store InMemoryStore) Get(id string) (TodoItem, error) {
 			return item, nil
 		}
 	}
-	return TodoItem{}, TodoItemNotFound{possibleId: id}
+	return TodoItem{}, errors.NotFound(id)
 }
 
 func (store *InMemoryStore) Remove(id string) {
