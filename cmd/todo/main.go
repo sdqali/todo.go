@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/sdqali/todo"
-	cassandra "github.com/sdqali/todo/db/cassandra"
-	pg "github.com/sdqali/todo/db/postgres"
+	cassandra "github.com/sdqali/todo/store/cassandra"
+	pg "github.com/sdqali/todo/store/postgres"
 )
 
 func main() {

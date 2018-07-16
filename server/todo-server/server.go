@@ -9,10 +9,10 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sdqali/todo"
-	cassandra "github.com/sdqali/todo/db/cassandra"
-	pg "github.com/sdqali/todo/db/postgres"
 	"github.com/sdqali/todo/server/todo-server/middleware"
 	"github.com/sdqali/todo/server/todo-server/routes"
+	cassandra "github.com/sdqali/todo/store/cassandra"
+	pg "github.com/sdqali/todo/store/postgres"
 )
 
 const filePath string = "/tmp/todo.json"
