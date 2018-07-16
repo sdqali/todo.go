@@ -39,12 +39,12 @@ func getRepo() todo.TodoRepo {
 	return todo.NewTodoRepo(getStore())
 }
 
-func getStore() todo.TodoStore {
+func getStore() st.TodoStore {
 	var storeType string
 	flag.StringVar(&storeType, "store", "in-memory", "One of json-file or in-memory")
 	flag.Parse()
 
-	var store todo.TodoStore
+	var store st.TodoStore
 
 	switch storeType {
 	case "json-file":

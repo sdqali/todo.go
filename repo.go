@@ -3,13 +3,16 @@ package todo
 import (
 	"bytes"
 	"fmt"
+
+	"github.com/sdqali/todo/domain"
+	"github.com/sdqali/todo/store"
 )
 
 type TodoRepo struct {
-	store TodoStore
+	store store.TodoStore
 }
 
-func NewTodoRepo(store TodoStore) TodoRepo {
+func NewTodoRepo(store store.TodoStore) TodoRepo {
 	return TodoRepo{store: store}
 }
 
@@ -21,15 +24,15 @@ func (repo TodoRepo) String() string {
 	return b.String()
 }
 
-func (repo TodoRepo) All() []TodoItem {
+func (repo TodoRepo) All() []domain.TodoItem {
 	return repo.store.All()
 }
 
-func (repo TodoRepo) Add(item TodoItem) {
+func (repo TodoRepo) Add(item domain.TodoItem) {
 	repo.store.Add(item)
 }
 
-func (repo TodoRepo) Get(id string) (TodoItem, error) {
+func (repo TodoRepo) Get(id string) (domain.TodoItem, error) {
 	return repo.store.Get(id)
 }
 
@@ -43,7 +46,7 @@ func (repo TodoRepo) Clear() {
 	}
 }
 
-func (repo TodoRepo) Save(item TodoItem) {
+func (repo TodoRepo) Save(item domain.TodoItem) {
 	repo.store.Save(item)
 }
 
@@ -65,6 +68,6 @@ func (repo TodoRepo) MarkAsTodo(id string) {
 	}
 }
 
-func (repo TodoRepo) Find(searchTerm string) []TodoItem {
+func (repo TodoRepo) Find(searchTerm string) []domain.TodoItem {
 	return repo.store.Find(searchTerm)
 }

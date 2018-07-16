@@ -4,14 +4,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/sdqali/todo"
+	"github.com/sdqali/todo/domain"
 )
 
 const testFilePath string = "/tmp/test.json"
 
 func TestCanAddItems(t *testing.T) {
 	store := NewJsonFileStore(testFilePath)
-	store.Add(todo.NewItem("test"))
+	store.Add(domain.NewItem("test"))
 	count := len(store.All())
 	if count != 1 {
 		t.Errorf("Expected store to have 1 item, but it had %d items.", count)

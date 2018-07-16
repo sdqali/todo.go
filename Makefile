@@ -7,7 +7,7 @@ build:
 	go build -v -o out/$(PREFIX)/todo-server $(PROJECT)/server/todo-server
 
 test:
-	go test -v $(PROJECT)
+	go test -v $(PROJECT)/domain
 	go test -v $(PROJECT)/store/json
 
 docker:

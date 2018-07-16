@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sdqali/todo"
+	"github.com/sdqali/todo/domain"
 	"github.com/sdqali/todo/server/todo-server/models"
 )
 
@@ -16,7 +17,7 @@ func Create(repo todo.TodoRepo) func(writer http.ResponseWriter, request *http.R
 		bytes, _ := ioutil.ReadAll(request.Body)
 		json.Unmarshal(bytes, &itemRequest)
 
-		item := todo.NewItem(itemRequest.Title)
+		item := domain.NewItem(itemRequest.Title)
 		item.Order = itemRequest.Order
 		repo.Add(item)
 

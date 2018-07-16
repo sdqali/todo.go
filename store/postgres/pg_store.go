@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/sdqali/todo"
+	"github.com/sdqali/todo/domain"
 	"github.com/sdqali/todo/errors"
 )
 
@@ -24,21 +24,21 @@ func NewDbStore(db *sql.DB) *DbStore {
 	return &DbStore{db: db}
 }
 
-func (store *DbStore) Add(item todo.TodoItem) {
+func (store *DbStore) Add(item domain.TodoItem) {
 	rows, _ := store.db.Query(INSERT_QUERY, item.Id, item.Title, item.Order, item.Completed)
 	rows.Close()
 }
 
-func (store DbStore) Get(id string) (todo.TodoItem, error) {
+func (store DbStore) Get(id string) (domain.TodoItem, error) {
 	rows, err := store.db.Query(SELECT_QUERY, id)
 	defer rows.Close()
 	if err != nil {
 		fmt.Println("ERROR: ", err)
-		return todo.TodoItem{}, errors.NotFound(id)
+		return domain.TodoItem{}, errors.NotFound(id)
 	}
 	list := itemsFromRows(rows)
 	if len(list) == 0 {
-		return todo.TodoItem{}, errors.NotFound(id)
+		return domain.TodoItem{}, errors.NotFound(id)
 	} else {
 		return list[0], nil
 	}
@@ -52,23 +52,23 @@ func (store *DbStore) Remove(id string) {
 	}
 }
 
-func (store DbStore) All() []todo.TodoItem {
+func (store DbStore) All() []domain.TodoItem {
 	rows, err := store.db.Query(SELECT_ALL_QUERY)
 	defer rows.Close()
 	if err == nil {
 		return itemsFromRows(rows)
 	} else {
 		fmt.Println("ERROR: ", err)
-		return make([]todo.TodoItem, 0)
+		return make([]domain.TodoItem, 0)
 	}
 }
 
-func (store *DbStore) Save(itemToSave todo.TodoItem) {
+func (store *DbStore) Save(itemToSave domain.TodoItem) {
 	rows, _ := store.db.Query(UPDATE_QUERY, itemToSave.Title, itemToSave.Order, itemToSave.Completed, itemToSave.Id)
 	rows.Close()
 }
 
-func (store DbStore) Find(searchTerm string) []todo.TodoItem {
+func (store DbStore) Find(searchTerm string) []domain.TodoItem {
 	query := fmt.Sprintf(SEARCH_QUERY, searchTerm)
 	rows, err := store.db.Query(query)
 	defer rows.Close()
@@ -76,12 +76,12 @@ func (store DbStore) Find(searchTerm string) []todo.TodoItem {
 		return itemsFromRows(rows)
 	} else {
 		fmt.Println("ERROR: ", err)
-		return make([]todo.TodoItem, 0)
+		return make([]domain.TodoItem, 0)
 	}
 }
 
-func itemsFromRows(rows *sql.Rows) []todo.TodoItem {
-	list := make([]todo.TodoItem, 0)
+func itemsFromRows(rows *sql.Rows) []domain.TodoItem {
+	list := make([]domain.TodoItem, 0)
 	for rows.Next() {
 		var id uuid.UUID
 		var title string
@@ -89,7 +89,7 @@ func itemsFromRows(rows *sql.Rows) []todo.TodoItem {
 		var completed bool
 
 		rows.Scan(&id, &title, &order, &completed)
-		list = append(list, todo.TodoItem{Id: id, Title: title, Order: order, Completed: completed})
+		list = append(list, domain.TodoItem{Id: id, Title: title, Order: order, Completed: completed})
 	}
 	return list
 }

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/sdqali/todo"
+	"github.com/sdqali/todo/domain"
 	st "github.com/sdqali/todo/store"
 	cassandra "github.com/sdqali/todo/store/cassandra"
 	js "github.com/sdqali/todo/store/json"
@@ -21,7 +22,7 @@ func main() {
 	flag.StringVar(&storeType, "store", "in-memory", "One of json-file or in-memory")
 	flag.Parse()
 
-	var store todo.TodoStore
+	var store st.TodoStore
 
 	switch storeType {
 	case "json-file":
@@ -44,7 +45,7 @@ func main() {
 		fmt.Println(repo)
 	case "add":
 		text := strings.Join(flag.Args(), " ")
-		repo.Add(todo.NewItem(text))
+		repo.Add(domain.NewItem(text))
 	case "get":
 		id := flag.Args()[0]
 		item, err := repo.Get(id)

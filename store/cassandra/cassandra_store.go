@@ -5,7 +5,7 @@ import (
 
 	"github.com/gocql/gocql"
 	"github.com/google/uuid"
-	todo "github.com/sdqali/todo"
+	"github.com/sdqali/todo/domain"
 	"github.com/sdqali/todo/errors"
 )
 
@@ -24,7 +24,7 @@ func NewCassandraStore(cluster *gocql.ClusterConfig) *CassandraStore {
 	return &CassandraStore{cluster: cluster}
 }
 
-func (store *CassandraStore) Add(item todo.TodoItem) {
+func (store *CassandraStore) Add(item domain.TodoItem) {
 	session, err := store.cluster.CreateSession()
 	defer session.Close()
 	if err != nil {
@@ -37,17 +37,17 @@ func (store *CassandraStore) Add(item todo.TodoItem) {
 	}
 }
 
-func (store *CassandraStore) Get(id string) (todo.TodoItem, error) {
+func (store *CassandraStore) Get(id string) (domain.TodoItem, error) {
 	session, err := store.cluster.CreateSession()
 	defer session.Close()
 	if err != nil {
 		fmt.Println("ERROR: ", err)
-		return todo.TodoItem{}, errors.NotFound(id)
+		return domain.TodoItem{}, errors.NotFound(id)
 	}
 	iter := session.Query(SELECT_QUERY, id).Iter()
 	items := itemsFromIter(iter)
 	if len(items) == 0 {
-		return todo.TodoItem{}, errors.NotFound(id)
+		return domain.TodoItem{}, errors.NotFound(id)
 	} else {
 		return items[0], nil
 	}
@@ -67,18 +67,18 @@ func (store *CassandraStore) Remove(id string) {
 	}
 }
 
-func (store *CassandraStore) All() []todo.TodoItem {
+func (store *CassandraStore) All() []domain.TodoItem {
 	session, err := store.cluster.CreateSession()
 	defer session.Close()
 	if err != nil {
 		fmt.Println("ERROR: ", err)
-		return make([]todo.TodoItem, 0)
+		return make([]domain.TodoItem, 0)
 	}
 	iter := session.Query(SELECT_ALL_QUERY).Iter()
 	return itemsFromIter(iter)
 }
 
-func (store *CassandraStore) Save(item todo.TodoItem) {
+func (store *CassandraStore) Save(item domain.TodoItem) {
 	session, err := store.cluster.CreateSession()
 	defer session.Close()
 	if err != nil {
@@ -92,20 +92,20 @@ func (store *CassandraStore) Save(item todo.TodoItem) {
 	}
 }
 
-func (store *CassandraStore) Find(searchTerm string) []todo.TodoItem {
+func (store *CassandraStore) Find(searchTerm string) []domain.TodoItem {
 	session, err := store.cluster.CreateSession()
 	defer session.Close()
 	if err != nil {
 		fmt.Println("ERROR: ", err)
-		return make([]todo.TodoItem, 0)
+		return make([]domain.TodoItem, 0)
 	}
 	query := fmt.Sprintf(SEARCH_QUERY, searchTerm)
 	iter := session.Query(query).Iter()
 	return itemsFromIter(iter)
 }
 
-func itemsFromIter(iter *gocql.Iter) []todo.TodoItem {
-	list := make([]todo.TodoItem, 0)
+func itemsFromIter(iter *gocql.Iter) []domain.TodoItem {
+	list := make([]domain.TodoItem, 0)
 
 	var id_str string
 	var title string
@@ -114,7 +114,7 @@ func itemsFromIter(iter *gocql.Iter) []todo.TodoItem {
 
 	for iter.Scan(&id_str, &title, &order, &completed) {
 		id, _ := uuid.Parse(id_str)
-		list = append(list, todo.TodoItem{Id: id, Title: title, Order: order, Completed: completed})
+		list = append(list, domain.TodoItem{Id: id, Title: title, Order: order, Completed: completed})
 	}
 	return list
 }
