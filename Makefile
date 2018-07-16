@@ -8,6 +8,7 @@ build:
 
 test:
 	go test -v $(PROJECT)
+	go test -v $(PROJECT)/store/json
 
 docker:
 	docker build -t sdqali.in/go/todo:latest .

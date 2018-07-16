@@ -6,7 +6,9 @@ import (
 	"strings"
 
 	"github.com/sdqali/todo"
+	st "github.com/sdqali/todo/store"
 	cassandra "github.com/sdqali/todo/store/cassandra"
+	js "github.com/sdqali/todo/store/json"
 	pg "github.com/sdqali/todo/store/postgres"
 )
 
@@ -23,17 +25,17 @@ func main() {
 
 	switch storeType {
 	case "json-file":
-		store = todo.NewJsonFileStore(filePath)
+		store = js.NewJsonFileStore(filePath)
 	case "in-memory":
-		store = &todo.InMemoryStore{}
+		store = &st.InMemoryStore{}
 	case "pg":
 		db := pg.GetDb()
-		store = todo.NewDbStore(db)
+		store = pg.NewDbStore(db)
 	case "cassandra":
 		cluster := cassandra.GetCluster()
 		store = cassandra.NewCassandraStore(cluster)
 	default:
-		store = &todo.InMemoryStore{}
+		store = &st.InMemoryStore{}
 	}
 
 	repo := todo.NewTodoRepo(store)
