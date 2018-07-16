@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/sdqali/todo"
 	"github.com/sdqali/todo/domain"
+	"github.com/sdqali/todo/repo"
 	"github.com/sdqali/todo/server/todo-server/models"
 )
 

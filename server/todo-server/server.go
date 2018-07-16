@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/sdqali/todo"
+	"github.com/sdqali/todo/repo"
 	"github.com/sdqali/todo/server/todo-server/middleware"
 	"github.com/sdqali/todo/server/todo-server/routes"
 	st "github.com/sdqali/todo/store"
